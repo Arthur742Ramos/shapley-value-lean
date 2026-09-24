@@ -92,6 +92,8 @@ def NullPlayer (ψ : Game N → N → ℝ) : Prop :=
 def Additive (ψ : Game N → N → ℝ) : Prop :=
   ∀ (v w : Game N) (i : N), ψ (v + w) i = ψ v i + ψ w i
 
+namespace Palomar
+
 theorem shapley_characterization (ψ : Game N → N → ℝ) :
     (Efficient N ψ ∧ Symmetric N ψ ∧ NullPlayer N ψ ∧ Additive N ψ) ↔
       ψ = shapleyValue N := by
@@ -113,5 +115,7 @@ theorem shapleyValue_nullPlayer : NullPlayer N (shapleyValue N) := by
 
 theorem shapleyValue_additive : Additive N (shapleyValue N) := by
   sorry
+
+end Palomar
 
 end ShapleyValue

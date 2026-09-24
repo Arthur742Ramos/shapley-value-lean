@@ -121,6 +121,28 @@ done <<< "$challenge_dependencies"
 
 lake build
 
+check_tmpdir=$(mktemp -d)
+trap 'rm -rf -- "$check_tmpdir"' EXIT
+check_file="$check_tmpdir/ComparatorNames.lean"
+python3 - "$repository_root/comparator.json" "$check_file" <<'PY'
+import json
+import pathlib
+import sys
+
+comparator = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+names = comparator["theorem_names"] + comparator["definition_names"]
+if not all(isinstance(name, str) for name in names):
+    raise SystemExit("error: comparator names must be strings")
+
+with open(sys.argv[2], "w", encoding="utf-8") as output:
+    output.write("import Challenge\n\n")
+    for name in names:
+        output.write(f"#check @{name}\n")
+PY
+lake env lean "$check_file"
+rm -rf -- "$check_tmpdir"
+trap - EXIT
+
 audit_output=$(lake env lean scripts/AxiomAudit.lean 2>&1)
 printf '%s\n' "$audit_output"
 printf '%s\n' "$audit_output" | python3 scripts/check-axiom-report.py comparator.json
