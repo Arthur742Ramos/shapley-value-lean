@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Please cite this formalization and the mathematical sources identified in README.md."
+title: "Shapley value axiomatic characterization in Lean 4"
+type: software
+authors:
+  - family-names: Ramos
+    given-names: Arthur Freitas
+license: BSD-3-Clause
+repository-code: "https://github.com/Arthur742Ramos/shapley-value-lean"
+version: 0.1.0

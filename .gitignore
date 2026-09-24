@@ -1,0 +1,6 @@
+.lake/
+.cache/
+build/
+*.olean
+*.ilean
+*.c
