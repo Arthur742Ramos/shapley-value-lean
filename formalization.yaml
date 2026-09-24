@@ -1,0 +1,211 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Shapley value axiomatic characterization"
+  description: >-
+    Formalizes finite TU cooperative games, the Shapley value formula, and the
+    four axioms of efficiency, symmetry, the null-player property, and
+    additivity. It proves that the Shapley value satisfies all four and proves
+    uniqueness via unanimity games and Möbius inversion over the Boolean
+    lattice. This is a reusable formalization artifact, not a claim of new
+    mathematics.
+  authors:
+    - "Arthur Freitas Ramos"
+  license: "BSD-3-Clause"
+  responsible_maintainers:
+    - "Arthur Freitas Ramos"
+
+classification:
+  arxiv: ["math.LO", "cs.GT"]
+  msc2020: ["91A12"]
+
+sources:
+  - title: "A Value for n-Person Games"
+    authors:
+      - "Lloyd S. Shapley"
+    id: "https://doi.org/10.1515/9781400881970-018"
+    type: "incollection"
+    location: "https://doi.org/10.1515/9781400881970-018"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: >-
+      Introduces the Shapley value and its axiomatic characterization
+      (efficiency, symmetry, null player, additivity); the development
+      formalizes this characterization for finite games. (Verified:
+      Contributions to the Theory of Games II, Princeton UP, 1953, pp. 307-317.)
+  - title: "The Shapley Value: Essays in Honor of Lloyd S. Shapley"
+    authors:
+      - "Alvin E. Roth"
+    id: "https://doi.org/10.1017/CBO9780511528446"
+    type: "book"
+    location: "https://doi.org/10.1017/CBO9780511528446"
+    relationship: "background"
+    author_endorsement: "not-contacted"
+
+status:
+  scope: >-
+    The library formalizes finite player types, normalized real-valued
+    characteristic functions, the factorial Shapley formula, its four
+    axioms, and the uniqueness characterization using unanimity games and
+    Möbius inversion over the Boolean lattice. Challenge.lean repeats the
+    compared statements with six deliberate proof holes; those statement
+    holes are excluded from the implementation sorry_count.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["gpt-6-luna (Codex CLI)"]
+      framework: "Lean 4 and Mathlib"
+      tool_setup: "Pinned Lean/Mathlib builds, closure-safe Challenge compilation, and Comparator-ready metadata."
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "The final definitions, statements, and proofs are checked by Lean's kernel."
+  spend_usd: "subscription-based"
+  notes: "AI assistance was used for proof engineering. The final definitions, statements, and proofs are checked by Lean's kernel."
+
+fidelity:
+  divergences: >-
+    Finite player types; real-valued characteristic functions with v ∅ = 0
+    bundled in the Game structure; explicit finite sums.
+
+alignment:
+  namespace: "ShapleyValue.Palomar"
+  statements:
+    - source: "Normalized cooperative game"
+      lean: "ShapleyValue.Game"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "A finite-player characteristic function into ℝ whose value at the empty coalition is zero."
+    - source: "Shapley coalition weight"
+      lean: "ShapleyValue.weight"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "The factorial coefficient (k - 1)! (n - k)! / n! for a coalition of size k."
+    - source: "Shapley value formula"
+      lean: "ShapleyValue.shapleyValue"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "The explicit finite sum of marginal contributions for each player."
+    - source: "Efficiency axiom"
+      lean: "ShapleyValue.Efficient"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "The payoffs sum to the worth of the grand coalition."
+    - source: "Symmetry axiom"
+      lean: "ShapleyValue.Symmetric"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "Players with interchangeable marginal contributions receive equal payoffs."
+    - source: "Null-player axiom"
+      lean: "ShapleyValue.NullPlayer"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "A player with no marginal contribution receives zero."
+    - source: "Additivity axiom"
+      lean: "ShapleyValue.Additive"
+      module: "ShapleyValue/Basic.lean"
+      status: "defined"
+      note: "The value respects pointwise addition of games."
+    - source: "Unanimity game"
+      lean: "ShapleyValue.unanimityGame"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "defined"
+      note: "A coalition has worth one exactly when it contains the nonempty unanimity coalition."
+    - source: "Möbius coefficient"
+      lean: "ShapleyValue.mobiusCoeff"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "defined"
+      note: "The Boolean-lattice Möbius transform of a cooperative game."
+    - source: "Shapley characterization"
+      lean: "ShapleyValue.Palomar.shapley_characterization"
+      module: "Solution.lean"
+      status: "proved"
+      note: "The four axioms characterize the Shapley value."
+    - source: "Shapley value uniqueness"
+      lean: "ShapleyValue.Palomar.shapleyValue_unique"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Every additive, efficient, symmetric, null-player allocation rule equals the Shapley value."
+    - source: "Shapley value efficiency"
+      lean: "ShapleyValue.Palomar.shapleyValue_efficient"
+      module: "Solution.lean"
+      status: "proved"
+      note: "The Shapley formula distributes the grand-coalition worth."
+    - source: "Shapley value symmetry"
+      lean: "ShapleyValue.Palomar.shapleyValue_symmetric"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Interchangeable players receive equal values under the Shapley formula."
+    - source: "Shapley value null-player property"
+      lean: "ShapleyValue.Palomar.shapleyValue_nullPlayer"
+      module: "Solution.lean"
+      status: "proved"
+      note: "A null player receives zero under the Shapley formula."
+    - source: "Shapley value additivity"
+      lean: "ShapleyValue.Palomar.shapleyValue_additive"
+      module: "Solution.lean"
+      status: "proved"
+      note: "The Shapley formula is additive in the game."
+    - source: "Shapley characterization"
+      lean: "ShapleyValue.shapley_characterization"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "proved"
+      note: "The library proof combines the uniqueness theorem with the four Shapley formula properties."
+    - source: "Shapley value uniqueness"
+      lean: "ShapleyValue.shapleyValue_unique"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "proved"
+      note: "The proof uses unanimity games and Möbius decomposition over the Boolean lattice."
+    - source: "Value on a unanimity game"
+      lean: "ShapleyValue.valueOn_unanimity"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "proved"
+      note: "Any allocation rule satisfying the four axioms divides a scaled unanimity game's worth equally among its coalition members."
+    - source: "Möbius decomposition"
+      lean: "ShapleyValue.mobius_decomposition"
+      module: "ShapleyValue/Uniqueness.lean"
+      status: "proved"
+      note: "Every normalized game is a finite linear combination of unanimity games."
+    - source: "Shapley value efficiency"
+      lean: "ShapleyValue.shapleyValue_efficient"
+      module: "ShapleyValue/Existence.lean"
+      status: "proved"
+      note: "Finite-sum reindexing and factorial weight balance establish efficiency."
+    - source: "Shapley value symmetry"
+      lean: "ShapleyValue.shapleyValue_symmetric"
+      module: "ShapleyValue/Existence.lean"
+      status: "proved"
+      note: "Coalition reindexing establishes equal values for interchangeable players."
+    - source: "Shapley value null-player property"
+      lean: "ShapleyValue.shapleyValue_nullPlayer"
+      module: "ShapleyValue/Existence.lean"
+      status: "proved"
+      note: "Every marginal contribution of a null player vanishes."
+    - source: "Shapley value additivity"
+      lean: "ShapleyValue.shapleyValue_additive"
+      module: "ShapleyValue/Existence.lean"
+      status: "proved"
+      note: "Distributivity of finite sums proves additivity."
+
+acknowledgements: >-
+  Mathlib contributors; Lloyd S. Shapley for the original axiomatic
+  characterization; and the Palomar Registry project for the
+  statement/solution Comparator workflow.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    The implementation library and Solution are proof-hole-free under the
+    pinned local build. Challenge contains six deliberate Palomar statement
+    holes, excluded from the implementation sorry_count. Hosted Comparator
+    verification, Palomar editorial review, and registration are separate
+    states and are not inferred from local compilation.
+

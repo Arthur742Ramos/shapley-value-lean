@@ -1,0 +1,38 @@
+name: Palomar readiness
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Audit package and build Lean
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-mathlib-cache: true
+      - run: bash scripts/verify-palomar.sh
+
+  comparator:
+    name: Run pinned Comparator and NanoDa
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-mathlib-cache: true
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.0"
+          cache: false
+      - run: bash scripts/verify-comparator.sh

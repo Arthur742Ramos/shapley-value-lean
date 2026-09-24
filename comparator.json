@@ -1,0 +1,24 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "ShapleyValue.Palomar.shapley_characterization",
+    "ShapleyValue.Palomar.shapleyValue_unique",
+    "ShapleyValue.Palomar.shapleyValue_efficient",
+    "ShapleyValue.Palomar.shapleyValue_symmetric",
+    "ShapleyValue.Palomar.shapleyValue_nullPlayer",
+    "ShapleyValue.Palomar.shapleyValue_additive"
+  ],
+  "definition_names": [
+    "ShapleyValue.Game",
+    "ShapleyValue.weight",
+    "ShapleyValue.shapleyValue",
+    "ShapleyValue.Efficient",
+    "ShapleyValue.Symmetric",
+    "ShapleyValue.NullPlayer",
+    "ShapleyValue.Additive"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": true
+}
+

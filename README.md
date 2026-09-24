@@ -20,23 +20,49 @@ A *value* `ψ` maps games to payoff vectors `N → ℝ`. The four axioms:
 3. **Null player**: a player contributing nothing gets `0`
 4. **Additivity**: `ψ (v + w) = ψ v + ψ w` pointwise
 
-Main results (see `ShapleyValue/Palomar.lean`):
+Main results (see `ShapleyValue/Basic.lean`, `ShapleyValue/Existence.lean`,
+and `ShapleyValue/Uniqueness.lean`):
 
-- `ShapleyValue.shapleyValue_efficiency`, `..._symmetry`,
-  `..._nullPlayer`, `..._additivity`: the Shapley value satisfies the axioms.
-- `ShapleyValue.shapley_uniqueness`: any value satisfying the four axioms
+- `ShapleyValue.shapleyValue_efficient`, `..._symmetric`,
+  `..._nullPlayer`, `..._additive`: the Shapley value satisfies the axioms.
+- `ShapleyValue.shapleyValue_unique`: any value satisfying the four axioms
   equals `shapleyValue` (via unanimity games and the Möbius decomposition).
 - `ShapleyValue.shapley_characterization`: the iff combining both directions.
 
 The development is sorry-free and axiom-clean (only `propext`,
 `Classical.choice`, `Quot.sound`).
 
+## Results
+
+The Palomar proof surface contains six checked theorems:
+
+- `ShapleyValue.Palomar.shapley_characterization`
+- `ShapleyValue.Palomar.shapleyValue_unique`
+- `ShapleyValue.Palomar.shapleyValue_efficient`
+- `ShapleyValue.Palomar.shapleyValue_symmetric`
+- `ShapleyValue.Palomar.shapleyValue_nullPlayer`
+- `ShapleyValue.Palomar.shapleyValue_additive`
+
+The library is organized as follows:
+
+- `ShapleyValue/Basic.lean` defines finite cooperative games, the Shapley weight
+  and formula, and the four axioms.
+- `ShapleyValue/Existence.lean` proves efficiency, symmetry, the null-player
+  property, and additivity for the Shapley formula.
+- `ShapleyValue/Uniqueness.lean` develops unanimity games and Möbius inversion
+  and proves uniqueness and the characterization.
+- `Challenge.lean` and `Solution.lean` provide the standalone Palomar statement
+  and proof surface.
+- `scripts/verify-palomar.sh` checks the package shape, import closure,
+  compilation, and axiom report.
+
 ## Palomar
 
 This repository is packaged for the [Palomar registry](https://palomar-registry.org/)
 from day one: `Challenge.lean` (statement), `Solution.lean` (proof),
-`comparator.json`, and `formalization.yaml`. Run `bash scripts/verify-comparator.sh`
-for the local preflight.
+`comparator.json`, and `formalization.yaml`. Run `bash scripts/verify-palomar.sh`
+for the local checks; `bash scripts/verify-comparator.sh` runs the pinned
+Comparator and NanoDa replay.
 
 ## Build
 
