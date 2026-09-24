@@ -319,7 +319,7 @@ theorem mobius_pointwise (v : Game N) (Q : Finset N) :
       simp [hQ]
     · have hQempty : Q = ∅ := by simpa using hQ
       rw [hCQ]
-      simp only [if_neg hQ, mul_zero]
+      simp only [ite_eq_right hQ, mul_zero]
       rw [hQempty]
       exact v.empty_val.symm
   have hsumA : (∑ T ∈ A, mobiusCoeff N v T) = ⇑v Q := by

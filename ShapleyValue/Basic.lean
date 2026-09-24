@@ -3,7 +3,7 @@ import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.FunLike.Basic
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 namespace ShapleyValue
 
