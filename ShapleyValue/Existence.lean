@@ -298,7 +298,7 @@ theorem shapleyValue_efficient : Efficient N (shapleyValue N) := by
         by_cases hEmpty : S = ∅
         · subst S
           change c ∅ * (⇑v) ∅ = 0
-          exact mul_eq_zero.mpr (Or.inr v.empty_val)
+          exact mul_eq_zero.mpr (Or.inr v.property)
         · have hkpos : 0 < S.card := by
             have hkne : S.card ≠ 0 := by
               intro hk
@@ -323,8 +323,8 @@ theorem shapleyValue_efficient : Efficient N (shapleyValue N) := by
           simp [hn]
         rw [huniv]
         calc
-          c ∅ * (⇑v) ∅ = 0 := mul_eq_zero.mpr (Or.inr v.empty_val)
-          _ = (⇑v) ∅ := v.empty_val.symm
+          c ∅ * (⇑v) ∅ = 0 := mul_eq_zero.mpr (Or.inr v.property)
+          _ = (⇑v) ∅ := v.property.symm
       · have hnpos : 0 < Fintype.card N := Nat.pos_of_ne_zero hn
         have htop : c Finset.univ = 1 := by
           simp only [c, n, Finset.card_univ, Nat.sub_self, Nat.cast_zero,

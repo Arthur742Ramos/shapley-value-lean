@@ -13,37 +13,28 @@ open scoped Nat BigOperators
 
 /-- A cooperative (TU) game is a characteristic function `v : Finset N → ℝ`
 normalized by `v ∅ = 0`. -/
-structure Game where
-  toFun : Finset N → ℝ
-  empty_val : toFun ∅ = 0
+def Game (N : Type*) : Type _ := { f : Finset N → ℝ // f ∅ = 0 }
 
 namespace Game
 
 /-- Coercion of a game to its characteristic function. -/
 instance : FunLike (Game N) (Finset N) ℝ where
-  coe := fun g => g.toFun
+  coe := fun g => g.val
   coe_injective := by
     intro f g h
-    cases f with
-    | mk vf hf =>
-      cases g with
-      | mk vg hg =>
-        change vf = vg at h
-        cases h
-        have hp : hf = hg := Subsingleton.elim _ _
-        cases hp
-        rfl
+    apply Subtype.ext
+    exact h
 
 /-- The zero cooperative game. -/
 instance : Zero (Game N) := ⟨0, by simp⟩
 
 /-- Pointwise addition of cooperative games. -/
 instance : Add (Game N) :=
-  ⟨fun v w => ⟨v.toFun + w.toFun, by simp [v.empty_val, w.empty_val]⟩⟩
+  ⟨fun v w => ⟨v.val + w.val, by simp [v.property, w.property]⟩⟩
 
 /-- Scalar multiplication of a cooperative game. -/
 instance : SMul ℝ (Game N) :=
-  ⟨fun c v => ⟨c • v.toFun, by simp [v.empty_val]⟩⟩
+  ⟨fun c v => ⟨c • v.val, by simp [v.property]⟩⟩
 
 omit [Fintype N] [DecidableEq N] in
 /-- Evaluation of the sum of two games. -/

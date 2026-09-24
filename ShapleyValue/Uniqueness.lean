@@ -262,7 +262,7 @@ theorem mobius_pointwise (v : Game N) (Q : Finset N) :
       by_cases hSempty : S = ∅
       · subst S
         change ⇑v ∅ * C ∅ = 0
-        exact mul_eq_zero.mpr (Or.inl v.empty_val)
+        exact mul_eq_zero.mpr (Or.inl v.property)
       · have hSnon : S.Nonempty := Finset.nonempty_iff_ne_empty.mpr hSempty
         have hSQ : S ⊆ Q := Finset.mem_powerset.mp hS
         have hCzero : C S = 0 := by
@@ -321,7 +321,7 @@ theorem mobius_pointwise (v : Game N) (Q : Finset N) :
       rw [hCQ]
       simp only [ite_eq_right hQ, mul_zero]
       rw [hQempty]
-      exact v.empty_val.symm
+      exact v.property.symm
   have hsumA : (∑ T ∈ A, mobiusCoeff N v T) = ⇑v Q := by
     calc
       (∑ T ∈ A, mobiusCoeff N v T) =

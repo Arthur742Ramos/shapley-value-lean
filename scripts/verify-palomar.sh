@@ -124,6 +124,8 @@ lake build
 check_tmpdir=$(mktemp -d)
 trap 'rm -rf -- "$check_tmpdir"' EXIT
 check_file="$check_tmpdir/ComparatorNames.lean"
+challenge_kinds_file="$check_tmpdir/ChallengeDeclarationKinds.lean"
+solution_kinds_file="$check_tmpdir/SolutionDeclarationKinds.lean"
 python3 - "$repository_root/comparator.json" "$check_file" <<'PY'
 import json
 import pathlib
@@ -140,6 +142,30 @@ with open(sys.argv[2], "w", encoding="utf-8") as output:
         output.write(f"#check @{name}\n")
 PY
 lake env lean "$check_file"
+
+python3 - "$repository_root/comparator.json" "$challenge_kinds_file" "$solution_kinds_file" <<'PY'
+import json
+import pathlib
+import sys
+
+comparator = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+checks = [
+    ("definition_names", "defnInfo"),
+    ("theorem_names", "thmInfo"),
+]
+
+for module, output_path in (("Challenge", sys.argv[2]), ("Solution", sys.argv[3])):
+    with open(output_path, "w", encoding="utf-8") as output:
+        output.write(f"import {module}\n\nopen Lean\n\nrun_cmd do\n  let env ← getEnv\n")
+        for key, expected_kind in checks:
+            for name in comparator[key]:
+                output.write(f"  match env.find? `{name} with\n")
+                output.write(f"  | some (.{expected_kind} _) => logInfo m!\"{expected_kind}: {name}\"\n")
+                output.write(f"  | some _ => throwError \"expected {expected_kind} for {name}\"\n")
+                output.write(f"  | none => throwError \"missing declaration {name}\"\n")
+PY
+lake env lean "$challenge_kinds_file"
+lake env lean "$solution_kinds_file"
 rm -rf -- "$check_tmpdir"
 trap - EXIT
 
